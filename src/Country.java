@@ -1,16 +1,22 @@
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 public class Country {
     private String name;
-    private HashSet<County> counties;
+    private TreeSet<County> counties;
 
-    public Country(String name, HashSet<County> counties) {
+    public Country(String name, TreeSet<County> counties) {
         this.name = name;
         this.counties = counties;
     }
 
     public Country(String name) {
-        this(name, new HashSet<County>());
+        this(name, new TreeSet<>(new Comparator<County>() {
+            @Override
+            public int compare(County c1, County c2) {
+                return c1.getName().compareTo(c2.getName());
+            }
+        }));
     }
 
     public Country() {
@@ -21,7 +27,7 @@ public class Country {
         return name;
     }
 
-    public HashSet<County> getCounties() {
+    public TreeSet<County> getCounties() {
         return counties;
     }
 

@@ -1,27 +1,20 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 public class Main {
 
     public static void main(String[] args) {
-        HashSet<Place> locations = new HashSet<Place>();
-        Place x1 = new Place();
-        Place x2 = new Place();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        TreeSet<Place> locations = new TreeSet<>(new Comparator<Place>() {
+            @Override
+            public int compare(Place p1, Place p2) {
+                return (int)(p1.getAveragePrice()-p2.getAveragePrice());
+            }
+        });
 
-        try {
-            x1 = new Place("Hotel Romula", new City("Caracal", new County("Olt", new Country("Romania"))),
-                    100, new HashSet<String>(), sdf.parse("21/12/2012"), sdf.parse("21/12/2013"));
+        HandleInputFiles filesHandler = new HandleInputFiles("input_locations");
 
-            x2 = new Place("Hotel Edinburgh", new City("Caracal", new County("Olt", new Country("Romania"))),
-                    100, new HashSet<String>(), sdf.parse("21/12/2012"), sdf.parse("21/12/2013"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        locations.add(x1);
-        locations.add(x2);
+        filesHandler.readLocations(locations);
+               
 
         System.out.println("The added locations are:");
         System.out.println(locations);

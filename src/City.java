@@ -1,20 +1,25 @@
-import java.util.Date;
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 public class City {
 
     private String name;
     private County county;
-    private HashSet<String> places;
+    private TreeSet<Place> places;
 
-    public City(String name, County county,HashSet<String> places) {
+    public City(String name, County county,TreeSet<Place> places) {
         this.name = name;
         this.county = county;
         this.places = places;
     }
 
     public City(String name, County county) {
-        this(name, county,new HashSet<String>());
+        this(name, county,new TreeSet<>(new Comparator<Place>() {
+            @Override
+            public int compare(Place p1, Place p2) {
+                return (int) (p1.getAveragePrice() - p2.getAveragePrice());
+            }
+        }));
     }
 
     public City() {
@@ -29,8 +34,12 @@ public class City {
         return county;
     }
 
-    public HashSet<String> getPlaces() {
+    public TreeSet<Place> getPlaces() {
         return places;
+    }
+
+    public void addPlace(Place x) {
+        this.places.add(x);
     }
 
     @Override
