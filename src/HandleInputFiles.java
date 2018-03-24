@@ -5,6 +5,8 @@ import java.util.*;
 
 public class HandleInputFiles {
 
+    /*Files containing all the places, commands and the one
+    * that has to contain the final results.*/
     String placesFile;
     String commandsFile;
     String outputFile;
@@ -15,34 +17,32 @@ public class HandleInputFiles {
         this.outputFile = output_file;
     }
 
+    /*Reads every line of the locations file, splits it and initialises the entire
+    hierarchy: countries->counties->cities->places.*/
     public void readLocations(HashMap<String, CountryAttributes> countries,
                               HashMap<String, PlaceAttributes> places) {
         FileReader file = null;
         String line = new String();
         String placeName, cityName, countyName, countryName;
         float averagePrice = 0;
-        ArrayList<String> activities = new ArrayList<String>();
+        ArrayList<String> activities;
         Date availableFrom, availableUntil;
-        String []parts = null;
-        String []splitActivities =null;
-        String []dates = null;
+        String []parts;
+        String []splitActivities;
+        String []dates;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         CountryAttributes countryAttributes;
         CountyAttributes countyAttributes;
         CityAttributes cityAttributes;
         PlaceAttributes placeAttributes;
 
-        placeName = new String();
-        cityName = new String();
-        countyName = new String();
-        countryName = new String();
-        availableFrom = new Date();
-        availableUntil = new Date();
         try {
             file = new FileReader(this.placesFile);
             BufferedReader br = new BufferedReader(file);
             while((line = br.readLine()) != null) {
+                /*Reinitialise the activities list in order to have a new one for every city.*/
                 activities = new ArrayList<String>();
+
                 parts = line.split(";");
                 placeName = parts[0];
                 cityName = parts[1];
@@ -50,13 +50,18 @@ public class HandleInputFiles {
                 countryName = parts[3];
                 averagePrice = Float.valueOf(parts[4]);
                 splitActivities = parts[5].split(",");
+
+                /*Create the activities list.*/
                 for(int i = 0; i < splitActivities.length; i++) {
                     activities.add(splitActivities[i]);
                 }
+
+                /*Transform the input into Date format.*/
                 dates = parts[6].split(",");
                 availableFrom = dateFormat.parse(dates[0]);
                 availableUntil = dateFormat.parse(dates[1]);
 
+                /*Add every country, county, city, place to the hierarchy, it it doesn't contain them already.*/
                 if(countries.containsKey(countryName)) {
                     countryAttributes = countries.get(countryName);
                 }
@@ -88,6 +93,7 @@ public class HandleInputFiles {
                 existentPlaces.put(placeName, placeAttributes);
                 places.put(placeName, placeAttributes);
             }
+            /*Close the input file.*/
             br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -98,8 +104,8 @@ public class HandleInputFiles {
         }
     }
 
-
-    public void readCommands(HashMap<String, CountryAttributes> countries,
+    /*Reads every line of the commands file, splits it and calls the adequate methods.*/
+    public void readExecuteCommands(HashMap<String, CountryAttributes> countries,
                              HashMap<String, PlaceAttributes> places) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         FileReader file = null;
@@ -115,6 +121,7 @@ public class HandleInputFiles {
             BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
             while((line = br.readLine()) != null) {
                 parts = line.split(":");
+                /*Depending on the command, call the right method.*/
                 if(parts[0].compareTo("Display all") == 0) {
                     exec.displayAll(countries, bw);
                     continue;
@@ -153,6 +160,7 @@ public class HandleInputFiles {
                     continue;
                 }
             }
+            /*Close both the output file and the commands one.*/
             bw.close();
             br.close();
         } catch (FileNotFoundException e) {

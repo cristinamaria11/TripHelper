@@ -1,5 +1,7 @@
 import java.util.HashMap;
 
+/*Class describing a city, containing a list of all the places and
+the names of both the country and the county it belongs to.*/
 public class CityAttributes {
 
     private HashMap<String, PlaceAttributes> places;

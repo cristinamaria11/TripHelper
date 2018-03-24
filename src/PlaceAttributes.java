@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+/*Class describing a place, containing all the attributes a place has.*/
 public class PlaceAttributes {
     private float averagePrice;
     private ArrayList<String> activities;
@@ -47,6 +48,7 @@ public class PlaceAttributes {
         return country;
     }
 
+    /*Check if the current place is available between the given dates.*/
     public boolean availableBetween(Date start, Date end) {
         boolean available = true;
         if(this.start.after(start) || this.end.before(end)) {
