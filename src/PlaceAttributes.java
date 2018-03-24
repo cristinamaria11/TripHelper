@@ -5,14 +5,15 @@ public class PlaceAttributes {
     private float averagePrice;
     private ArrayList<String> activities;
     private Date start, end;
-    private String city, county, country;
+    private String place, city, county, country;
 
     public PlaceAttributes(float averagePrice, ArrayList<String> activities, Date start, Date end,
-                           String city, String county, String country) {
+                           String place, String city, String county, String country) {
         this.averagePrice = averagePrice;
         this.activities = activities;
         this.start = start;
         this.end = end;
+        this.place = place;
         this.city = city;
         this.county = county;
         this.country = country;
@@ -44,5 +45,18 @@ public class PlaceAttributes {
 
     public String getCountry() {
         return country;
+    }
+
+    public boolean availableBetween(Date start, Date end) {
+        boolean available = true;
+        if(this.start.after(start) || this.end.before(end)) {
+            available = false;
+        }
+        return available;
+    }
+
+    @Override
+    public String toString() {
+        return this.place;
     }
 }

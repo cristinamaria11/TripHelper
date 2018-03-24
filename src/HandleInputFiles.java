@@ -42,6 +42,7 @@ public class HandleInputFiles {
             file = new FileReader(this.placesFile);
             BufferedReader br = new BufferedReader(file);
             while((line = br.readLine()) != null) {
+                activities = new ArrayList<String>();
                 parts = line.split(";");
                 placeName = parts[0];
                 cityName = parts[1];
@@ -83,10 +84,11 @@ public class HandleInputFiles {
                 }
 
                 HashMap<String, PlaceAttributes> existentPlaces = cityAttributes.getPlaces();
-                placeAttributes = new PlaceAttributes(averagePrice, activities, availableFrom, availableUntil, cityName, countyName, countryName);
+                placeAttributes = new PlaceAttributes(averagePrice, activities, availableFrom, availableUntil, placeName,cityName, countyName, countryName);
                 existentPlaces.put(placeName, placeAttributes);
                 places.put(placeName, placeAttributes);
             }
+            br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -118,30 +120,41 @@ public class HandleInputFiles {
                     continue;
                 }
                 if(parts[0].compareTo("Find location named") == 0) {
+                    exec.findPlace(places, parts[1], bw);
                     continue;
                 }
                 if(parts[0].compareTo("Find locations in city") == 0) {
+                    exec.findPlaceIn(places, parts[1], bw);
                     continue;
                 }
-                if(parts[0].compareTo("Order by price in city") == 0) {
+                if(parts[0].compareTo("Find places by activity") == 0) {
+                    exec.topPlacesbyActivity(countries, parts[1], bw);
                     continue;
                 }
-                if(parts[0].compareTo("Find cheapest places by activity") == 0) {
-                    continue;
-                }
-                if(parts[0].contains("Availability")) {
+                if(parts[0].contains("between")) {
                     String []location = parts[0].split(" ");
-                    String []locationParts = location[2].split("/");
+                    String []locationParts = location[3].split("/");
                     countryName = locationParts[0];
                     countyName = locationParts[1];
                     cityName = locationParts[2];
                     String []dateParts = parts[1].split("-");
                     availableFrom = dateFormat.parse(dateParts[0]);
                     availableUntil = dateFormat.parse(dateParts[1]);
+                    exec.topPlacesAvailable(countries, countryName, countyName, cityName, availableFrom, availableUntil,bw);
+                    continue;
+                }
+                if(parts[0].contains("Cheapest")) {
+                    String []location = parts[0].split(" ");
+                    String []locationParts = location[3].split("/");
+                    countryName = locationParts[0];
+                    countyName = locationParts[1];
+                    cityName = locationParts[2];
+                    exec.topPlaces(countries, countryName, countyName, cityName,bw);
                     continue;
                 }
             }
             bw.close();
+            br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
