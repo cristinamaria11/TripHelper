@@ -3,7 +3,7 @@ Java application that helps people choose where to spend their next vacation.<br
 It uses files to read the locations and commands and also to write the results. The names of the files are given from stdin.
 
 ## Supported commands
-Display all - Prints all the locations, hierarchical.<br>
+- Display all - Prints all the locations, hierarchical.<br>
 Find location named:location_name - Prints all the information on the place named location_name<br>
 Find locations in city:city_name - Prints all the locations from the city named city_name<br>
 Find places by activity:activity_name - Prints all the places that have the activity activity_name, in the descending order of the price<br>
