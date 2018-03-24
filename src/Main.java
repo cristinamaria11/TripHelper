@@ -1,22 +1,17 @@
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.TreeSet;
 
 public class Main {
 
     public static void main(String[] args) {
-        TreeSet<Place> locations = new TreeSet<>(new Comparator<Place>() {
-            @Override
-            public int compare(Place p1, Place p2) {
-                return (int)(p1.getAveragePrice()-p2.getAveragePrice());
-            }
-        });
+        HashMap<String, CountryAttributes> countries = new HashMap<String, CountryAttributes>();
+        HashMap<String, PlaceAttributes> places = new HashMap<String, PlaceAttributes>();
 
-        HandleInputFiles filesHandler = new HandleInputFiles("input_locations");
+        HandleInputFiles filesHandler = new HandleInputFiles("input_locations", "input_commands", "output_file");
 
-        filesHandler.readLocations(locations);
-               
+        filesHandler.readLocations(countries, places);
+        filesHandler.readCommands(countries, places);
 
-        System.out.println("The added locations are:");
-        System.out.println(locations);
     }
 }
