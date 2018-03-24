@@ -1,6 +1,6 @@
 # TripHelper
 Java application that helps people choose where to spend their next vacation.<br>
-It uses files to read the locations and commands and also to write the results. The names of the files are given from stdin.
+It uses files to read the locations and commands and also to write the results. The name of the files are given from stdin.
 
 ## Supported commands
 - Display all<br>Prints all the locations, hierarchical.<br><br>
